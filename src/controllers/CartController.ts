@@ -4,34 +4,55 @@ import jwt from 'jsonwebtoken';
 
 export default class CartController {
 
-   private cartService = new CartService();
+  // private cartService = new CartService();
+  private cartService: CartService;
 
+  constructor() {
+    this.cartService = new CartService();
+  }
  
 
   public async addToCart(req: Request, res: Response): Promise<void> {
-    const { userId, productId, quantity } = req.body;
-
     try {
-      // Verify JWT and get the user ID from the token
-    //   const decoded: any = jwt.verify(token, process.env.JWT_SECRET);
-    //   const userId = decoded.id;
+        console.log(req.body); // Log the request body to verify incoming data
 
-      await this.cartService.addProductToCart(userId, productId, quantity);
-      res.status(200).json({ message: 'Product added to cart' });
+        const { userId, productId, quantity } = req.body;
+
+        // Add the product to the cart using the cartService
+        await this.cartService.addProductToCart(userId, productId, quantity);
+
+        // Send a success response
+        res.status(200).json({ message: 'Product added to cart' });
 
     } catch (err) {
-      res.status(500).json({
-        message: 'Error adding product to cart'
-        //,error: err.message
-      });
+        // Check if the error is an instance of Error
+        if (err instanceof Error) {
+            // Log the error message for debugging purposes
+            console.log(err.message);
+
+            // Send an error response with the error message
+            res.status(500).json({
+                message: 'Error adding product to cart',
+                error: err.message
+               
+            });
+        } else {
+            // Handle cases where err is not an instance of Error
+            console.log('Unexpected error:', err);
+            res.status(500).json({
+                message: 'Unexpected error occurred while adding product to cart'
+            });
+        }
     }
-  }
+}
+
 
   public async getCartDataById(req: Request, res: Response): Promise<void> {
-    const productId = parseInt(req.params.id, 10);
-  
+    //const userId = parseInt(req.params.id, 10);
+    const { userId } = req.body;
+
     try {
-      const product = await this.cartService.getCartDataById(productId);
+      const product = await this.cartService.getCartDataById(userId);
   
       if (!product) {
         res.status(404).json({ message: 'cart data not found' });

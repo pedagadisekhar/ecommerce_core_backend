@@ -11,7 +11,7 @@ class PaymentService {
         key_secret: process.env.RAZORPAY_KEY_SECRET as string,
       });
 
-  async createPayment(orderId: number, amount: number) {
+ public async createPayment(orderId: number, amount: number) {
     const options = {
       amount: amount * 100, // amount in the smallest currency unit (e.g., paise)
       currency: 'INR',
@@ -22,7 +22,7 @@ class PaymentService {
     return order;
   }
 
-  async verifyPaymentSignature(paymentDetails: any) {
+  public async verifyPaymentSignature(paymentDetails: any) {
     const { orderId, paymentId, signature } = paymentDetails;
    const generatedSignature = crypto
   .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET as string)

@@ -28,8 +28,8 @@ router.post('/products', authenticateJWT, upload.single('imageUrl'), productCont
 
 router.post('/class', ClassController.insertClass);
 router.get('/getproductsidbased/:id', productController.getProductById.bind(productController));
-router.post('/addtocart', authenticateJWT, cartController.addToCart.bind(CartController));
-router.post('/getcartsidbased/:id', authenticateJWT, cartController.getCartDataById.bind(CartController));
+router.post('/addtocart', authenticateJWT, cartController.addToCart.bind(cartController));
+router.post('/getcartsidbased', authenticateJWT, cartController.getCartDataById.bind(cartController));
 // Order routes
 router.post('/api/orders/create', authenticateJWT, orderController.createOrder.bind(orderController));
 router.get('/api/orders/:id', authenticateJWT, orderController.getOrderById.bind(orderController));
