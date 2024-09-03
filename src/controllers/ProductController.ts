@@ -58,7 +58,7 @@ public async getProductById(req: Request, res: Response): Promise<void> {
     }
   }
 
-
+  
   
   public async getTrendingProducts(req: Request, res: Response): Promise<Response> {
     try {

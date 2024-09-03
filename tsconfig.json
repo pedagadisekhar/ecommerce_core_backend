@@ -108,11 +108,15 @@
     "noImplicitAny": false,
     "moduleResolution": "node",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "resolveJsonModule": true
 
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "app.ts",
+    "server.ts",
+    "src/**/*"                       // Specify the files to be included in the compilation
+  ],
   "exclude": ["node_modules"]
 
 }

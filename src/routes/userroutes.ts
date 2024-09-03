@@ -30,9 +30,12 @@ router.post('/class', ClassController.insertClass);
 router.get('/getproductsidbased/:id', productController.getProductById.bind(productController));
 router.post('/addtocart', authenticateJWT, cartController.addToCart.bind(cartController));
 router.post('/getcartsidbased', authenticateJWT, cartController.getCartDataById.bind(cartController));
+router.post('/removecartsidbased', authenticateJWT, cartController.removeCartDataById.bind(cartController));
+
+
 // Order routes
-router.post('/api/orders/create', authenticateJWT, orderController.createOrder.bind(orderController));
-router.get('/api/orders/:id', authenticateJWT, orderController.getOrderById.bind(orderController));
+router.post('/orders', authenticateJWT, orderController.createOrder.bind(orderController));
+router.get('/orders/:id', authenticateJWT, orderController.getOrderById.bind(orderController));
 // Route to create a payment
 router.post('/api/payments/create', authenticateJWT, paymentController.createPayment.bind(paymentController));
 
