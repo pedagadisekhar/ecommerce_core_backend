@@ -25,15 +25,25 @@ class OrderService {
   }
 
   // Method to get order details by order ID
- public async getOrderById(orderId: number): Promise<{ order: any; items: any[] }> {
+ public async getOrderById(orderId: number): Promise<{ order: any; items: any[]; address: any[] }> {
     // Retrieve the order details
-    const [orderRows]: any = await this.db.query('SELECT * FROM Orders WHERE id = ?', [orderId]);
-    const order = orderRows[0];
+    const [resultSets]: any = await this.db.query('CALL GetOrderDetails(?)', [orderId]);
 
-    // Retrieve the items associated with the order
-    const [items]: any = await this.db.query('SELECT * FROM OrderItems WHERE orderId = ?', [orderId]);
+// The first result set contains the order data (Orders table)
+const orderRows = resultSets[0];  // First result set (Orders)
+const order = orderRows[0];       // Assuming only one order is returned
 
-    return { order, items };
+// The second result set contains the items data (OrderItems table)
+const items = resultSets[1];      // Second result set (OrderItems)
+
+// The third result set contains the address data (AddressMaster table)
+const address = resultSets[2];    // Third result set (AddressMaster)
+
+// You can now work with the `order`, `items`, and `address` data
+console.log("Order:", order);
+console.log("Items:", items);
+console.log("Address:", address);
+    return { order, items ,address};
   }
 }
 
