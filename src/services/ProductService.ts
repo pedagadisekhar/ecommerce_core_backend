@@ -72,25 +72,20 @@ public async createProduct(product: Product): Promise<void> {
 }
 
 
-  public async getProductById(productId: number): Promise<GetProduct | null> {
-    const query = 'SELECT * FROM products WHERE ProductId = ?';
-    const [rows] = await this.db.query(query, [productId]);
+public async getProductById(productId: number): Promise<any> {
+  const query = 'SELECT * FROM products WHERE ProductId = ?';
+  const [rows] = await this.db.query(query, [productId]);
 
-    const productData = rows[0];
-  return new GetProduct(
-    productData.ProductId,
-    productData.name,
-    productData.description,
-    productData.price,
-    productData.inventory,
-    productData.sku,
-    productData.createdby,      // Include 'createdby'
-    productData.istrending,     // Include 'istrending'
-    productData.imageUrl          // Ensure 'image' is the correct field from the database
-  );
+  // If no product is found, return null
+  // if (rows.length === 0) {
+  //     return null;
+  // }
 
-    return null;
-  }
+  // Return the raw data directly
+  return rows[0];
+}
+
+
 
 
 }
