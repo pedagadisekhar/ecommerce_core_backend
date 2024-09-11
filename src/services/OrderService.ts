@@ -10,14 +10,26 @@ class OrderService {
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     // Create a new order and retrieve the order ID
-    const [orderResult]: any = await this.db.execute('INSERT INTO Orders (userId, total) VALUES (?, ?)', [userId, total]);
-    const orderId = orderResult.insertId;
+    // const [orderResult]: any = await this.db.execute('INSERT INTO Orders (userId, total) VALUES (?, ?)', [userId, total]);
+    // const orderId = orderResult.insertId;
+
+    const [orderResult]: any = await this.db.execute('CALL InsertOrder(?, ?)', [userId, total]);
+
+// If you want to retrieve the inserted order ID:
+    const orderId = orderResult[0][0].orderId;
 
     // Insert each cart item as an order item
+    // for (const item of cartItems) {
+    //   await this.db.execute(
+    //     'INSERT INTO OrderItems (orderId, productId, productName, productImageUrl, quantity, price,cartid) VALUES (?, ?, ?, ?, ?, ?,?)',
+    //     [orderId, item.productId, item.productName, item.productImageUrl, item.quantity, item.price ,item.cartid]
+    //   );
+    // }
+
     for (const item of cartItems) {
       await this.db.execute(
-        'INSERT INTO OrderItems (orderId, productId, productName, productImageUrl, quantity, price) VALUES (?, ?, ?, ?, ?, ?)',
-        [orderId, item.productId, item.productName, item.productImageUrl, item.quantity, item.price]
+        'CALL InsertOrderItem(?, ?, ?, ?, ?, ?, ?)', 
+        [orderId, item.productId, item.productName, item.productImageUrl, item.quantity, item.price, item.cartid]
       );
     }
 
@@ -45,6 +57,22 @@ console.log("Items:", items);
 console.log("Address:", address);
     return { order, items ,address};
   }
+
+  public async getOrdersByUserId(userId: number): Promise<any> {
+    try {
+      const query = 'CALL GetOrdersByUserId(?)'; // Correctly formatted stored procedure call
+      const [rows] = await this.db.execute(query, [userId]); // Pass userId as a parameter
+      
+      return rows; // Return the result directly
+    } catch (err) {
+      console.error('Error retrieving orders:', err);
+      throw new Error('Error retrieving orders');
+    }
+  }
+
 }
+
+
+
 
 export default new OrderService();

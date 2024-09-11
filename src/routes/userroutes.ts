@@ -8,7 +8,7 @@ import { authenticateJWT } from '../Middleware/AuthMiddleware';
 import OrderController from '../controllers/OrderController';
 import PaymentController from '../controllers/PaymentController';
 import AddressController from '../controllers/AddressController';
-
+import OtpRegController from '../controllers/otpregController';
 
 
 const router = Router();
@@ -18,8 +18,14 @@ const cartController = new CartController();
 const orderController = new OrderController();
 const paymentController = new PaymentController();
 const addressController = new AddressController();
+const otpRegController = new OtpRegController();
+
 
 router.post('/signup', userController.signup.bind(userController));
+router.post('/otpsignup', otpRegController.signup.bind(otpRegController));
+router.post('/verifyOtp', otpRegController.verifyOtp.bind(otpRegController));
+
+
 router.post('/signin', userController.signin.bind(userController));
 router.get('/getproducts', productController.getAllProducts.bind(productController));
 router.get('/getTrendingProducts', productController.getTrendingProducts.bind(productController));
@@ -41,7 +47,7 @@ router.post('/class', ClassController.insertClass);
 router.get('/getproductsidbased/:id', productController.getProductById.bind(productController));
 router.post('/addtocart', authenticateJWT, cartController.addToCart.bind(cartController));
 router.post('/getcartsidbased', authenticateJWT, cartController.getCartDataById.bind(cartController));
-router.post('/removecartsidbased', authenticateJWT, cartController.removeCartDataById.bind(cartController));
+router.post('/removecartsidbased', cartController.removeCartDataById.bind(cartController));
 
 router.post('/addaddress', authenticateJWT, addressController.addAddress.bind(addressController));
 
@@ -51,6 +57,9 @@ router.get('/orders/:id', authenticateJWT, orderController.getOrderById.bind(ord
 //router.get('/getproductsidbased/:id', productController.getProductById.bind(productController));
 
 // Route to create a payment
+router.post('/payments', authenticateJWT, paymentController.createPaymentdetails.bind(paymentController));
+
+
 router.post('/api/payments/create', authenticateJWT, paymentController.createPayment.bind(paymentController));
 
 // Route to verify a payment
