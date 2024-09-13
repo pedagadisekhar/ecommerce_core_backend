@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Database_1 = __importDefault(require("../db/Database"));
-const GetProduct_1 = __importDefault(require("../Models/GetProduct"));
 class ProductService {
     constructor() {
         this.db = Database_1.default.getInstance();
@@ -32,21 +31,56 @@ class ProductService {
             return rows;
         });
     }
+    searchProductsByKeyword(keyword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = `CALL SearchProductsByKeyword(?)`; // Call the stored procedure
+            const values = [keyword]; // Pass the keyword as a parameter
+            try {
+                const [rows] = yield this.db.execute(query, values);
+                return rows[0]; // Use rows[0] because stored procedures return results as an array of arrays
+            }
+            catch (error) {
+                console.error('Error executing search query:', error);
+                throw new Error('Failed to search products');
+            }
+        });
+    }
+    getOfferProducts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = 'CALL getOfferProducts()';
+            const [rows] = yield this.db.execute(query);
+            return rows;
+        });
+    }
     createProduct(product) {
         return __awaiter(this, void 0, void 0, function* () {
             const query = `
-      INSERT INTO products (ProductName, description, price, inventory, sku, imageUrl,istrending,createdby)
-      VALUES (?, ?, ?, ?, ?, ?,?,?)
-    `;
+    INSERT INTO products 
+    (ProductName, description, price, inventory, sku, imageUrl, istrending, createdby, image2, image3, design, size, keyHighlights, FabricMaterial, SleeveType, Fit, brand, NeckStyle, isoffer, isfestival, isspecial)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
             const values = [
                 product.name,
                 product.description,
                 product.price,
                 product.inventory,
                 product.sku,
-                product.image,
+                product.imageUrl,
                 product.istrending,
-                product.createdby
+                product.createdby,
+                product.image2,
+                product.image3,
+                product.design,
+                product.size,
+                product.keyHighlights,
+                product.FabricMaterial,
+                product.SleeveType,
+                product.Fit,
+                product.brand,
+                product.NeckStyle,
+                product.isoffer,
+                product.isfestival,
+                product.isspecial
             ];
             yield this.db.execute(query, values);
         });
@@ -55,12 +89,12 @@ class ProductService {
         return __awaiter(this, void 0, void 0, function* () {
             const query = 'SELECT * FROM products WHERE ProductId = ?';
             const [rows] = yield this.db.query(query, [productId]);
-            const productData = rows[0];
-            return new GetProduct_1.default(productData.ProductId, productData.name, productData.description, productData.price, productData.inventory, productData.sku, productData.createdby, // Include 'createdby'
-            productData.istrending, // Include 'istrending'
-            productData.imageUrl // Ensure 'image' is the correct field from the database
-            );
-            return null;
+            // If no product is found, return null
+            // if (rows.length === 0) {
+            //     return null;
+            // }
+            // Return the raw data directly
+            return rows[0];
         });
     }
 }

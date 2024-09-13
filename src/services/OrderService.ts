@@ -63,7 +63,19 @@ console.log("Address:", address);
       const query = 'CALL GetOrdersByUserId(?)'; // Correctly formatted stored procedure call
       const [rows] = await this.db.execute(query, [userId]); // Pass userId as a parameter
       
-      return rows; // Return the result directly
+      return [rows]; // Return the result directly
+    } catch (err) {
+      console.error('Error retrieving orders:', err);
+      throw new Error('Error retrieving orders');
+    }
+  }
+
+  public async getAddressByUserId(userId: number): Promise<any> {
+    try {
+      const query = 'CALL GetAddressByUserId(?)'; // Correctly formatted stored procedure call
+      const [rows] = await this.db.execute(query, [userId]); // Pass userId as a parameter
+      
+      return [rows]; // Return the result directly
     } catch (err) {
       console.error('Error retrieving orders:', err);
       throw new Error('Error retrieving orders');

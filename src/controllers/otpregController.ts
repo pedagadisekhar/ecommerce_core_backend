@@ -3,37 +3,43 @@ import OtpRegService from '../services/otpregService';
 
 class OtpRegController {
   private otpRegService = new OtpRegService();
-
-  public async signup(req: Request, res: Response): Promise<void> {
-    const { UserName, email, mobileNo,Password} = req.body;
-    console.log(req.body)
+  public async signup(req: Request, res: Response) {
+    const { UserName, email, mobileNo, Password } = req.body;
+    console.log(req.body);  // Log request body for debugging
+    
     try {
-      const defaultPassword = Password; // Use a more secure password in a real application
-      //const hashedPassword = await this.otpRegService.hashPassword(defaultPassword);
+      // Hash the password
       const hashedPassword = await this.otpRegService.hashPassword(Password);
-      console.log(hashedPassword);
-
+      console.log("Hashed password:", hashedPassword);
+  
+      // Check if the user already exists
       const userExists = await this.otpRegService.checkIfUserExists(email, mobileNo);
-      if (userExists) {
-        res.status(400).json({ message: 'User with this email or mobile number already exists' });
-      }
-
-      // Store OTP and user details temporarily
-      const otp = await this.otpRegService.generateOTP();
-      await this.otpRegService.storeOTP(mobileNo, otp, { UserName, email, hashedPassword });
-
-      await this.otpRegService.sendOTP(mobileNo, otp);
-      const token = this.otpRegService.generateJWTWithoutId(UserName, email);
-
-      res.status(201).json({ message: 'User created. OTP sent.', token });
+      if (!userExists) {
+        const otp = await this.otpRegService.generateOTP();
+        await this.otpRegService.storeOTP(mobileNo, otp, { UserName, email, hashedPassword });
+        await this.otpRegService.sendOTP(mobileNo, otp);
+  
+        // Generate JWT token without user ID
+        const token = this.otpRegService.generateJWTWithoutId(UserName, email);
+  
+        // Send success response
+        return res.status(201).json({ message: 'User created. OTP sent.', token });
+      } 
+      return res.status(201).json({ message: 'User already created' });
+      
     } catch (err) {
+      console.error("Error occurred during signup:", err);  // Log any errors
+  
+      // Handle errors and send a 500 response if something goes wrong
       if (err instanceof Error) {
-        res.status(500).json({ message: 'Error creating user', error: err.message });
+        return res.status(500).json({ message: 'Error creating user', error: err.message });
       } else {
-        res.status(500).json({ message: 'An unknown error occurred' });
+        return res.status(500).json({ message: 'An unknown error occurred' });
       }
     }
   }
+  
+  
 
   public async verifyOtp(req: Request, res: Response): Promise<void> {
     const { mobileNo, otp } = req.body;

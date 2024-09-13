@@ -54,6 +54,8 @@ router.post('/addaddress', authenticateJWT, addressController.addAddress.bind(ad
 // Order routes
 router.post('/orders', authenticateJWT, orderController.createOrder.bind(orderController));
 router.get('/orders/:id', authenticateJWT, orderController.getOrderById.bind(orderController));
+router.post('/myorders', authenticateJWT, orderController.getOrdersByUserId.bind(orderController));
+
 //router.get('/getproductsidbased/:id', productController.getProductById.bind(productController));
 
 // Route to create a payment

@@ -16,10 +16,10 @@ export default class CartController {
     try {
         console.log(req.body); // Log the request body to verify incoming data
 
-        const { userId, productId, quantity } = req.body;
+        const { userId, productId, quantity,size } = req.body;
 
         // Add the product to the cart using the cartService
-        await this.cartService.addProductToCart(userId, productId, quantity);
+        await this.cartService.addProductToCart(userId, productId, quantity,size);
 
         // Send a success response
         res.status(200).json({ message: 'Product added to cart' });

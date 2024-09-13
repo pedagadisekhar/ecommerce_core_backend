@@ -5,9 +5,9 @@ import Database from '../db/Database';
 class  CartService {
     private db = Database.getInstance();
 
-    public async addProductToCart(userId: number, productId: number, quantity: number): Promise<void> {
+    public async addProductToCart(userId: number, productId: number, quantity: number,size: string): Promise<void> {
         const query = 'CALL AddProductToCart(?, ?, ?)';
-        const [result] = await this.db.execute(query, [userId, productId, quantity]);
+        const [result] = await this.db.execute(query, [userId, productId, quantity,size]);
     
         // Optionally, handle the result if needed
         // For example, check if the operation was successful

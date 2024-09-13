@@ -23,6 +23,33 @@ class PaymentService {
             key_secret: process.env.RAZORPAY_KEY_SECRET,
         });
     }
+    createPaymentdetails(orderId, userid, addressid, total, paymentMethod) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const query = 'CALL AddPaymentDetails(?, ?, ?, ?, ?, ?)';
+                const values = [orderId, userid, addressid, total, paymentMethod, 'Pending'];
+                // Execute the stored procedure
+                const [rows] = yield this.db.execute(query, values);
+                // Retrieve the paymentId from the result
+                const paymentId = (_a = rows[0][0]) === null || _a === void 0 ? void 0 : _a.paymentId;
+                return {
+                    message: 'Payment created successfully',
+                    paymentId,
+                    orderId,
+                    userid,
+                    addressid,
+                    total,
+                    paymentMethod,
+                    paymentStatus: 'Pending'
+                };
+            }
+            catch (err) {
+                console.error('Error creating payment:', err);
+                throw new Error('Error creating payment');
+            }
+        });
+    }
     createPayment(orderId, amount) {
         return __awaiter(this, void 0, void 0, function* () {
             const options = {

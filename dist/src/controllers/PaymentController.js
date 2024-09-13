@@ -14,6 +14,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const PaymentService_1 = __importDefault(require("../services/PaymentService"));
 class PaymentController {
+    createPaymentdetails(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { orderId, userid, addressid, total, paymentMethod } = req.body;
+            console.log(req.body);
+            try {
+                // Call the service function to handle payment creation
+                const payment = yield PaymentService_1.default.createPaymentdetails(orderId, userid, addressid, total, paymentMethod);
+                res.status(200).json(payment);
+            }
+            catch (err) {
+                console.error('Error creating payment:', err);
+                res.status(500).json({ message: 'Error creating payment' });
+            }
+        });
+    }
     createPayment(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { orderId, amount } = req.body;
