@@ -1,28 +1,28 @@
 import { Request, Response } from 'express';
-import  CartService  from '../services/CartService';
+import  WishListService  from '../services/WishListService';
 import jwt from 'jsonwebtoken';
 
-export default class CartController {
+export default class WishListController {
 
   // private cartService = new CartService();
-  private cartService: CartService;
+  private wishlistService: WishListService;
 
   constructor() {
-    this.cartService = new CartService();
+    this.wishlistService = new WishListService();
   }
  
 
-  public async addToCart(req: Request, res: Response): Promise<void> {
+  public async addToWishList(req: Request, res: Response): Promise<void> {
     try {
         console.log(req.body); // Log the request body to verify incoming data
 
         const { userId, productId, quantity,size } = req.body;
 
         // Add the product to the cart using the cartService
-        await this.cartService.addProductToCart(userId, productId, quantity,size);
+        await this.wishlistService.addToWishList(userId, productId, quantity,size);
 
         // Send a success response
-        res.status(200).json({ message: 'Product added to cart' });
+        res.status(200).json({ message: 'wishlist added to cart' });
 
     } catch (err) {
         // Check if the error is an instance of Error
@@ -32,7 +32,7 @@ export default class CartController {
 
             // Send an error response with the error message
             res.status(500).json({
-                message: 'Error adding product to cart',
+                message: 'Error adding product to wishlist',
                 error: err.message
                
             });
@@ -47,15 +47,15 @@ export default class CartController {
 }
 
 
-  public async getCartDataById(req: Request, res: Response): Promise<void> {
+  public async getWishListDataById(req: Request, res: Response): Promise<void> {
     //const userId = parseInt(req.params.id, 10);
     const { userId } = req.body;
 
     try {
-      const product = await this.cartService.getCartDataById(userId);
+      const product = await this.wishlistService.getWishListDataById(userId);
   
       if (!product) {
-        res.status(404).json({ message: 'cart data not found' });
+        res.status(404).json({ message: 'wishlist data not found' });
         return;
       }
   
@@ -65,12 +65,12 @@ export default class CartController {
     }
   }
   
-  public async removeCartDataById(req: Request, res: Response): Promise<void> {
+  public async removeWishListDataById(req: Request, res: Response): Promise<void> {
     //const userId = parseInt(req.params.id, 10);
     const { cartid } = req.body;
 
     try {
-      const product = await this.cartService.removeCartDataById(cartid);
+      const product = await this.wishlistService.removeWishListDataById(cartid);
   
       if (!product) {
         res.status(404).json({ message: 'cart data not found' });
@@ -86,15 +86,15 @@ export default class CartController {
 
   
 
-  public async getCartDatacountById(req: Request, res: Response): Promise<void> {
+  public async getWishListDatacountById(req: Request, res: Response): Promise<void> {
     //const userId = parseInt(req.params.id, 10);
     const { userId } = req.body;
 
     try {
-      const product = await this.cartService.getCartDatacountById(userId);
+      const product = await this.wishlistService.getWishListDatacountById(userId);
   
       if (!product) {
-        res.status(404).json({ message: 'cart data not found' });
+        res.status(404).json({ message: 'wishlist data not found' });
         return;
       }
   

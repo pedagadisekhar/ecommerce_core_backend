@@ -48,6 +48,8 @@ router.get('/getproductsidbased/:id', productController.getProductById.bind(prod
 router.post('/addtocart', authenticateJWT, cartController.addToCart.bind(cartController));
 router.post('/getcartsidbased', authenticateJWT, cartController.getCartDataById.bind(cartController));
 router.post('/removecartsidbased', cartController.removeCartDataById.bind(cartController));
+router.post('/getCartDatacountById', cartController.getCartDatacountById.bind(cartController));
+
 
 router.post('/addaddress', authenticateJWT, addressController.addAddress.bind(addressController));
 
