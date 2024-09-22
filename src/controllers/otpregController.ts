@@ -3,6 +3,8 @@ import OtpRegService from '../services/otpregService';
 
 class OtpRegController {
   private otpRegService = new OtpRegService();
+  private Url: string = process.env.URL as string; 
+
   public async signup(req: Request, res: Response) {
     const { UserName, email, mobileNo, Password } = req.body;
     console.log(req.body);  // Log request body for debugging
@@ -40,6 +42,37 @@ class OtpRegController {
   }
   
   
+
+  public async forgetpassword(req: Request, res: Response) {
+    const {  mobileNo } = req.body;
+    console.log(req.body);  // Log request body for debugging
+    
+    try {
+      // Hash the passwor
+      // Check if the user already exists
+      const userExists = await this.otpRegService.checkIfpasswordExists(mobileNo);
+      if (!userExists) {
+       // const Url = await this.otpRegService.getpassword(mobileNo);
+        
+        await this.otpRegService.sendOTP(mobileNo, this.Url);     
+        // Send success response
+        return res.status(201).json({ message: 'User created. OTP sent.'});
+      } 
+      return res.status(201).json({ message: 'User already created' });
+      
+    } catch (err) {
+      console.error("Error occurred during signup:", err);  // Log any errors
+  
+      // Handle errors and send a 500 response if something goes wrong
+      if (err instanceof Error) {
+        return res.status(500).json({ message: 'Error creating user', error: err.message });
+      } else {
+        return res.status(500).json({ message: 'An unknown error occurred' });
+      }
+    }
+  }
+ 
+
 
   public async verifyOtp(req: Request, res: Response): Promise<void> {
     const { mobileNo, otp } = req.body;

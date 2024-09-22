@@ -30,7 +30,21 @@ class OtpRegService {
       throw new Error('Database error while checking user existence');
     }
   }
-
+  
+  public async checkIfpasswordExists( mobileNo: string): Promise<boolean> {
+    const query = `
+      SELECT COUNT(*) AS count FROM userdetails 
+      WHERE  MobileNo = ?;
+    `;
+  
+    try {
+      const [rows]: any = await this.db.query(query, [mobileNo]);
+      return rows[0].count > 0;
+    } catch (err) {
+      console.error('Error checking user existence:', err);
+      throw new Error('Database error while checking user existence');
+    }
+  }
 
   public async storeOTP(mobileNo: string, otp: string, userDetails: any): Promise<void> {
     const otpExpiry = format(new Date(Date.now() + 5 * 60 * 1000), 'yyyy-MM-dd HH:mm:ss'); // OTP expires in 5 minutes
@@ -103,6 +117,25 @@ class OtpRegService {
       throw new Error('Failed to send OTP');
     }
   }
+
+  public async getpassword( mobileNo: string): Promise<string> {
+    const query = `
+      SELECT password FROM userdetails 
+      WHERE  MobileNo = ?;
+    `;
+  
+    try {
+      const [rows]: any = await this.db.query(query, [mobileNo]);
+      return rows[0];
+    } catch (err) {
+      console.error('Error checking user existence:', err);
+      throw new Error('Database error while checking user existence');
+    }
+  }
+
+
+
+
 }
 
 export default OtpRegService;

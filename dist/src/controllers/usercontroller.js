@@ -64,5 +64,33 @@ class UserController {
             }
         });
     }
+    updatePassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { mobile, newPassword } = req.body; // Assuming the user provides email and new password
+            console.log(req.body);
+            try {
+                // Check if the user exists
+                const user = yield this.userService.findUserByMobile(mobile);
+                if (!user) {
+                    res.status(404).json({ message: 'User not found' });
+                }
+                else {
+                    // Hash the new password
+                    const hashedPassword = yield this.userService.hashPassword(newPassword);
+                    // Update the user's password
+                    yield this.userService.updatePassword(mobile, hashedPassword);
+                    res.status(200).json({ message: 'Password updated successfully' });
+                }
+            }
+            catch (err) {
+                if (err instanceof Error) {
+                    res.status(500).json({ message: 'Error updating password', error: err.message });
+                }
+                else {
+                    res.status(500).json({ message: 'An unknown error occurred' });
+                }
+            }
+        });
+    }
 }
 exports.default = UserController;

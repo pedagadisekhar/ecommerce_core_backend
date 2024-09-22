@@ -17,10 +17,10 @@ class CartService {
     constructor() {
         this.db = Database_1.default.getInstance();
     }
-    addProductToCart(userId, productId, quantity) {
+    addProductToCart(userId, productId, quantity, size) {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = 'CALL AddProductToCart(?, ?, ?)';
-            const [result] = yield this.db.execute(query, [userId, productId, quantity]);
+            const query = 'CALL AddProductToCart(?, ?, ? ,?)';
+            const [result] = yield this.db.execute(query, [userId, productId, quantity, size]);
             // Optionally, handle the result if needed
             // For example, check if the operation was successful
             console.log(result);
@@ -30,6 +30,19 @@ class CartService {
         return __awaiter(this, void 0, void 0, function* () {
             //const query = 'select * from carttransactiontable where userid  = ?';
             const query = 'call getdatafromcart(?)';
+            const [rows] = yield this.db.query(query, [userId]);
+            // Assuming rows is an array of results
+            if ([rows].length > 0) {
+                const productData = rows[0];
+                return productData;
+            }
+            return null;
+        });
+    }
+    getCartDatacountById(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = 'select count(*) from carttransactiontable where userid  = ?';
+            //const query = 'call getdatafromcart(?)';
             const [rows] = yield this.db.query(query, [userId]);
             // Assuming rows is an array of results
             if ([rows].length > 0) {

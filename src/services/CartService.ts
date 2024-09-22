@@ -7,6 +7,7 @@ class  CartService {
 
     public async addProductToCart(userId: number, productId: number, quantity: number,size: string): Promise<void> {
         const query = 'CALL AddProductToCart(?, ?, ? ,?)';
+        
         const [result] = await this.db.execute(query, [userId, productId, quantity,size]);
     
         // Optionally, handle the result if needed

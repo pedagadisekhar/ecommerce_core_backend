@@ -22,6 +22,8 @@ const otpRegController = new OtpRegController();
 
 
 router.post('/signup', userController.signup.bind(userController));
+router.post('/forgetpassword', userController.updatePassword.bind(userController));
+
 router.post('/otpsignup', otpRegController.signup.bind(otpRegController));
 router.post('/verifyOtp', otpRegController.verifyOtp.bind(otpRegController));
 

@@ -23,6 +23,7 @@ const paymentController = new PaymentController_1.default();
 const addressController = new AddressController_1.default();
 const otpRegController = new otpregController_1.default();
 router.post('/signup', userController.signup.bind(userController));
+router.post('/forgetpassword', userController.updatePassword.bind(userController));
 router.post('/otpsignup', otpRegController.signup.bind(otpRegController));
 router.post('/verifyOtp', otpRegController.verifyOtp.bind(otpRegController));
 router.post('/signin', userController.signin.bind(userController));
@@ -42,10 +43,12 @@ router.get('/getproductsidbased/:id', productController.getProductById.bind(prod
 router.post('/addtocart', AuthMiddleware_1.authenticateJWT, cartController.addToCart.bind(cartController));
 router.post('/getcartsidbased', AuthMiddleware_1.authenticateJWT, cartController.getCartDataById.bind(cartController));
 router.post('/removecartsidbased', cartController.removeCartDataById.bind(cartController));
+router.post('/getCartDatacountById', cartController.getCartDatacountById.bind(cartController));
 router.post('/addaddress', AuthMiddleware_1.authenticateJWT, addressController.addAddress.bind(addressController));
 // Order routes
 router.post('/orders', AuthMiddleware_1.authenticateJWT, orderController.createOrder.bind(orderController));
 router.get('/orders/:id', AuthMiddleware_1.authenticateJWT, orderController.getOrderById.bind(orderController));
+router.post('/myorders', AuthMiddleware_1.authenticateJWT, orderController.getOrdersByUserId.bind(orderController));
 //router.get('/getproductsidbased/:id', productController.getProductById.bind(productController));
 // Route to create a payment
 router.post('/payments', AuthMiddleware_1.authenticateJWT, paymentController.createPaymentdetails.bind(paymentController));

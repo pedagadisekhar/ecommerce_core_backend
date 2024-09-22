@@ -45,6 +45,21 @@ class UserService {
       : null;
   }
   
+  public async findUserByMobile(mobile: string): Promise<UserRetrive | null> {
+    const query = 'SELECT UserId, UserName, email, Password FROM userdetails WHERE MobileNo = ?';
+  
+    // Cast the result to an array of RowDataPacket
+    const [rows] = await this.db.execute<RowDataPacket[]>(query, [mobile]);
+  
+    // Type assertion to UserRetrive[] based on the expected structure
+    const userRows = rows as UserRetrive[];
+  
+    return userRows.length > 0
+      ? new UserRetrive(userRows[0].UserId, userRows[0].UserName, userRows[0].email, userRows[0].Password)
+      : null;
+  }
+
+
   public async hashPassword(Password: string): Promise<string> {
     try {
       return await bcrypt.hash(Password, 10);
@@ -53,6 +68,15 @@ class UserService {
       throw error;
     }
   }
+  
+  public async updatePassword(mobile: string, hashedPassword: string): Promise<void> {
+    const query = 'UPDATE userdetails SET Password = ? WHERE MobileNo = ?';
+    const values = [hashedPassword, mobile];
+    
+    await this.db.execute(query, values);
+  }
+  
+
 
   public async comparePassword(Password: string, hashedPassword: string): Promise<boolean> {
     return bcrypt.compare(Password, hashedPassword);

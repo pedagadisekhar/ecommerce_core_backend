@@ -49,6 +49,36 @@ class UserController {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }
+
+  public async updatePassword(req: Request, res: Response): Promise<void> {
+    const { mobile, newPassword } = req.body; // Assuming the user provides email and new password
+    console.log(req.body);
+  
+    try {
+      // Check if the user exists
+      const user = await this.userService.findUserByMobile(mobile);
+      if (!user) {
+         res.status(404).json({ message: 'User not found' });
+      }else{
+      // Hash the new password
+      const hashedPassword = await this.userService.hashPassword(newPassword);
+  
+      // Update the user's password
+      await this.userService.updatePassword(mobile, hashedPassword);
+  
+      res.status(200).json({ message: 'Password updated successfully' });
+    }
+    } catch (err) {
+      if (err instanceof Error) {
+        res.status(500).json({ message: 'Error updating password', error: err.message });
+      } else {
+        res.status(500).json({ message: 'An unknown error occurred' });
+      }
+    }
+  }
+  
+
+
 }
 
 export default UserController;

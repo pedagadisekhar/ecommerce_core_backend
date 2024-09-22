@@ -3,10 +3,10 @@ import OrderService from '../services/OrderService';
 
 export default class OrderController {
   public async createOrder(req: Request, res: Response): Promise<void> {
-    const { userId, cartItems } = req.body;
+    const { userId, cartItems, discount} = req.body;
 
     try {
-      const orderId = await OrderService.createOrder(userId, cartItems);
+      const orderId = await OrderService.createOrder(userId, cartItems,discount);
       res.status(200).json({ message: 'Order created successfully', orderId });
     }    catch (err) {
       // Check if the error is an instance of Error

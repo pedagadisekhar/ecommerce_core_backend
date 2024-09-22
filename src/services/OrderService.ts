@@ -5,7 +5,7 @@ class OrderService {
   private db = Database.getInstance();
 
   // Method to create a new order
- public async createOrder(userId: number, cartItems: any[]): Promise<number> {
+ public async createOrder(userId: number, cartItems: any[] ,discount: number): Promise<number> {
     // Calculate the total price
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -13,7 +13,7 @@ class OrderService {
     // const [orderResult]: any = await this.db.execute('INSERT INTO Orders (userId, total) VALUES (?, ?)', [userId, total]);
     // const orderId = orderResult.insertId;
 
-    const [orderResult]: any = await this.db.execute('CALL InsertOrder(?, ?)', [userId, total]);
+    const [orderResult]: any = await this.db.execute('CALL InsertOrder(?, ?,?)', [userId, total,discount]);
 
 // If you want to retrieve the inserted order ID:
     const orderId = orderResult[0][0].orderId;

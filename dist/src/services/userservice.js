@@ -79,6 +79,18 @@ class UserService {
                 : null;
         });
     }
+    findUserByMobile(mobile) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = 'SELECT UserId, UserName, email, Password FROM userdetails WHERE mobile = ?';
+            // Cast the result to an array of RowDataPacket
+            const [rows] = yield this.db.execute(query, [mobile]);
+            // Type assertion to UserRetrive[] based on the expected structure
+            const userRows = rows;
+            return userRows.length > 0
+                ? new User_1.UserRetrive(userRows[0].UserId, userRows[0].UserName, userRows[0].email, userRows[0].Password)
+                : null;
+        });
+    }
     hashPassword(Password) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -88,6 +100,13 @@ class UserService {
                 console.error('Error hashing password:', error);
                 throw error;
             }
+        });
+    }
+    updatePassword(mobile, hashedPassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = 'UPDATE userdetails SET Password = ? WHERE MobileNo = ?';
+            const values = [hashedPassword, mobile];
+            yield this.db.execute(query, values);
         });
     }
     comparePassword(Password, hashedPassword) {

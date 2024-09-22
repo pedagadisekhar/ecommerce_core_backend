@@ -21,9 +21,9 @@ class CartController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 console.log(req.body); // Log the request body to verify incoming data
-                const { userId, productId, quantity } = req.body;
+                const { userId, productId, quantity, size } = req.body;
                 // Add the product to the cart using the cartService
-                yield this.cartService.addProductToCart(userId, productId, quantity);
+                yield this.cartService.addProductToCart(userId, productId, quantity, size);
                 // Send a success response
                 res.status(200).json({ message: 'Product added to cart' });
             }
@@ -71,6 +71,23 @@ class CartController {
             const { cartid } = req.body;
             try {
                 const product = yield this.cartService.removeCartDataById(cartid);
+                if (!product) {
+                    res.status(404).json({ message: 'cart data not found' });
+                    return;
+                }
+                res.status(200).json(product);
+            }
+            catch (err) {
+                res.status(500).json({ message: 'Error fetching product' });
+            }
+        });
+    }
+    getCartDatacountById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const userId = parseInt(req.params.id, 10);
+            const { userId } = req.body;
+            try {
+                const product = yield this.cartService.getCartDatacountById(userId);
                 if (!product) {
                     res.status(404).json({ message: 'cart data not found' });
                     return;

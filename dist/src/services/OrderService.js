@@ -66,7 +66,20 @@ class OrderService {
             try {
                 const query = 'CALL GetOrdersByUserId(?)'; // Correctly formatted stored procedure call
                 const [rows] = yield this.db.execute(query, [userId]); // Pass userId as a parameter
-                return rows; // Return the result directly
+                return [rows]; // Return the result directly
+            }
+            catch (err) {
+                console.error('Error retrieving orders:', err);
+                throw new Error('Error retrieving orders');
+            }
+        });
+    }
+    getAddressByUserId(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = 'CALL GetAddressByUserId(?)'; // Correctly formatted stored procedure call
+                const [rows] = yield this.db.execute(query, [userId]); // Pass userId as a parameter
+                return [rows]; // Return the result directly
             }
             catch (err) {
                 console.error('Error retrieving orders:', err);
