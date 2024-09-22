@@ -9,6 +9,7 @@ import OrderController from '../controllers/OrderController';
 import PaymentController from '../controllers/PaymentController';
 import AddressController from '../controllers/AddressController';
 import OtpRegController from '../controllers/otpregController';
+import WishListController from '../controllers/WishListController';
 
 
 const router = Router();
@@ -19,7 +20,7 @@ const orderController = new OrderController();
 const paymentController = new PaymentController();
 const addressController = new AddressController();
 const otpRegController = new OtpRegController();
-
+const wishListcontroller = new WishListController();
 
 router.post('/signup', userController.signup.bind(userController));
 router.post('/forgetpassword', userController.updatePassword.bind(userController));
@@ -51,6 +52,16 @@ router.post('/addtocart', authenticateJWT, cartController.addToCart.bind(cartCon
 router.post('/getcartsidbased', authenticateJWT, cartController.getCartDataById.bind(cartController));
 router.post('/removecartsidbased', cartController.removeCartDataById.bind(cartController));
 router.post('/getCartDatacountById', cartController.getCartDatacountById.bind(cartController));
+
+
+router.post('/addtowishlist', authenticateJWT, wishListcontroller.addToWishList.bind(cartController));
+router.post('/getwishlistidbased', authenticateJWT, wishListcontroller.getWishListDataById.bind(cartController));
+router.post('/removewishlistidbased', wishListcontroller.removeWishListDataById.bind(cartController));
+router.post('/getwishlistDatacountById', wishListcontroller.getWishListDatacountById.bind(cartController));
+
+
+
+
 
 
 router.post('/addaddress', authenticateJWT, addressController.addAddress.bind(addressController));
