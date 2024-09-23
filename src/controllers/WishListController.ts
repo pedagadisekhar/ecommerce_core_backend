@@ -4,11 +4,12 @@ import jwt from 'jsonwebtoken';
 
 export default class WishListController {
 
-  // private cartService = new CartService();
+  // private wishlistService = new CartService();
   private wishlistService: WishListService;
 
   constructor() {
     this.wishlistService = new WishListService();
+    this.addToWishList = this.addToWishList.bind(this);
   }
  
 

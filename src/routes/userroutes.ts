@@ -48,6 +48,12 @@ router.post('/products', authenticateJWT,
 
 router.post('/class', ClassController.insertClass);
 router.get('/getproductsidbased/:id', productController.getProductById.bind(productController));
+router.get('/gettrendingproducts', productController.getTrendingProducts.bind(productController));
+router.get('/getofferproducts', productController.getOfferProducts.bind(productController));
+
+
+
+
 router.post('/addtocart', authenticateJWT, cartController.addToCart.bind(cartController));
 router.post('/getcartsidbased', authenticateJWT, cartController.getCartDataById.bind(cartController));
 router.post('/removecartsidbased', cartController.removeCartDataById.bind(cartController));
@@ -58,10 +64,6 @@ router.post('/addtowishlist', authenticateJWT, wishListcontroller.addToWishList.
 router.post('/getwishlistidbased', authenticateJWT, wishListcontroller.getWishListDataById.bind(cartController));
 router.post('/removewishlistidbased', wishListcontroller.removeWishListDataById.bind(cartController));
 router.post('/getwishlistDatacountById', wishListcontroller.getWishListDatacountById.bind(cartController));
-
-
-
-
 
 
 router.post('/addaddress', authenticateJWT, addressController.addAddress.bind(addressController));

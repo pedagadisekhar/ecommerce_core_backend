@@ -12,7 +12,7 @@ class  WishListService {
     
         // Optionally, handle the result if needed
         // For example, check if the operation was successful
-        console.log(result);
+        //console.log(result);
         
       }
     
