@@ -63,7 +63,7 @@ router.post('/getCartDatacountById', cartController.getCartDatacountById.bind(ca
 router.post('/addtowishlist', authenticateJWT, wishListcontroller.addToWishList.bind(cartController));
 router.post('/getwishlistidbased', authenticateJWT, wishListcontroller.getWishListDataById.bind(cartController));
 router.post('/removewishlistidbased', wishListcontroller.removeWishListDataById.bind(cartController));
-router.post('/getwishlistDatacountById', wishListcontroller.getWishListDatacountById.bind(cartController));
+router.post('/getwishlistDatacountById',authenticateJWT, wishListcontroller.getWishListDatacountById.bind(cartController));
 
 
 router.post('/addaddress', authenticateJWT, addressController.addAddress.bind(addressController));

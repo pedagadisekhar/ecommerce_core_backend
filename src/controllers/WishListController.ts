@@ -10,6 +10,9 @@ export default class WishListController {
   constructor() {
     this.wishlistService = new WishListService();
     this.addToWishList = this.addToWishList.bind(this);
+    this.getWishListDataById = this.getWishListDataById.bind(this);
+    this.removeWishListDataById = this.removeWishListDataById.bind(this);
+    this.getWishListDatacountById = this.getWishListDatacountById.bind(this);
   }
  
 
