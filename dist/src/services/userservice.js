@@ -81,7 +81,7 @@ class UserService {
     }
     findUserByMobile(mobile) {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = 'SELECT UserId, UserName, email, Password FROM userdetails WHERE mobile = ?';
+            const query = 'SELECT UserId, UserName, email, Password FROM userdetails WHERE MobileNo = ?';
             // Cast the result to an array of RowDataPacket
             const [rows] = yield this.db.execute(query, [mobile]);
             // Type assertion to UserRetrive[] based on the expected structure

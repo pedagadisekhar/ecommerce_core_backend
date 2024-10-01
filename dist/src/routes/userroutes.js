@@ -14,6 +14,7 @@ const OrderController_1 = __importDefault(require("../controllers/OrderControlle
 const PaymentController_1 = __importDefault(require("../controllers/PaymentController"));
 const AddressController_1 = __importDefault(require("../controllers/AddressController"));
 const otpregController_1 = __importDefault(require("../controllers/otpregController"));
+const WishListController_1 = __importDefault(require("../controllers/WishListController"));
 const router = (0, express_1.Router)();
 const userController = new usercontroller_1.default();
 const productController = new ProductController_1.default();
@@ -22,8 +23,10 @@ const orderController = new OrderController_1.default();
 const paymentController = new PaymentController_1.default();
 const addressController = new AddressController_1.default();
 const otpRegController = new otpregController_1.default();
+const wishListcontroller = new WishListController_1.default();
 router.post('/signup', userController.signup.bind(userController));
 router.post('/forgetpassword', userController.updatePassword.bind(userController));
+router.post('/forgetmsg', otpRegController.forgetpassword.bind(otpRegController));
 router.post('/otpsignup', otpRegController.signup.bind(otpRegController));
 router.post('/verifyOtp', otpRegController.verifyOtp.bind(otpRegController));
 router.post('/signin', userController.signin.bind(userController));
@@ -40,10 +43,16 @@ router.post('/products', AuthMiddleware_1.authenticateJWT, multerconfig_1.defaul
 ]), productController.createProduct.bind(productController));
 router.post('/class', ClassController_1.default.insertClass);
 router.get('/getproductsidbased/:id', productController.getProductById.bind(productController));
+router.get('/gettrendingproducts', productController.getTrendingProducts.bind(productController));
+router.get('/getofferproducts', productController.getOfferProducts.bind(productController));
 router.post('/addtocart', AuthMiddleware_1.authenticateJWT, cartController.addToCart.bind(cartController));
 router.post('/getcartsidbased', AuthMiddleware_1.authenticateJWT, cartController.getCartDataById.bind(cartController));
 router.post('/removecartsidbased', cartController.removeCartDataById.bind(cartController));
 router.post('/getCartDatacountById', cartController.getCartDatacountById.bind(cartController));
+router.post('/addtowishlist', AuthMiddleware_1.authenticateJWT, wishListcontroller.addToWishList.bind(cartController));
+router.post('/getwishlistidbased', AuthMiddleware_1.authenticateJWT, wishListcontroller.getWishListDataById.bind(cartController));
+router.post('/removewishlistidbased', wishListcontroller.removeWishListDataById.bind(cartController));
+router.post('/getwishlistDatacountById', AuthMiddleware_1.authenticateJWT, wishListcontroller.getWishListDatacountById.bind(cartController));
 router.post('/addaddress', AuthMiddleware_1.authenticateJWT, addressController.addAddress.bind(addressController));
 // Order routes
 router.post('/orders', AuthMiddleware_1.authenticateJWT, orderController.createOrder.bind(orderController));

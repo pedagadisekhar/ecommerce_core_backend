@@ -34,8 +34,7 @@
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.10.3",
     "razorpay": "^2.9.4",
-    "reflect-metadata": "^0.2.2",
-    "twilio": "^5.3.0"
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@types/multer": "^1.4.12",

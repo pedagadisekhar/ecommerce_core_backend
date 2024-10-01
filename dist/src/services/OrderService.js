@@ -19,14 +19,14 @@ class OrderService {
         this.db = Database_1.default.getInstance();
     }
     // Method to create a new order
-    createOrder(userId, cartItems) {
+    createOrder(userId, cartItems, discount) {
         return __awaiter(this, void 0, void 0, function* () {
             // Calculate the total price
             const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
             // Create a new order and retrieve the order ID
             // const [orderResult]: any = await this.db.execute('INSERT INTO Orders (userId, total) VALUES (?, ?)', [userId, total]);
             // const orderId = orderResult.insertId;
-            const [orderResult] = yield this.db.execute('CALL InsertOrder(?, ?)', [userId, total]);
+            const [orderResult] = yield this.db.execute('CALL InsertOrder(?, ?,?)', [userId, total, discount]);
             // If you want to retrieve the inserted order ID:
             const orderId = orderResult[0][0].orderId;
             // Insert each cart item as an order item

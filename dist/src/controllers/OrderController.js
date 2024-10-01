@@ -16,9 +16,9 @@ const OrderService_1 = __importDefault(require("../services/OrderService"));
 class OrderController {
     createOrder(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { userId, cartItems } = req.body;
+            const { userId, cartItems, discount } = req.body;
             try {
-                const orderId = yield OrderService_1.default.createOrder(userId, cartItems);
+                const orderId = yield OrderService_1.default.createOrder(userId, cartItems, discount);
                 res.status(200).json({ message: 'Order created successfully', orderId });
             }
             catch (err) {
