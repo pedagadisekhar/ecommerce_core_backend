@@ -33,13 +33,14 @@ class OtpRegService {
   
   public async checkIfpasswordExists( mobileNo: string): Promise<boolean> {
     const query = `
-      SELECT COUNT(*) AS count FROM userdetails 
+      SELECT * FROM userdetails 
       WHERE  MobileNo = ?;
     `;
   
     try {
       const [rows]: any = await this.db.query(query, [mobileNo]);
-      return rows[0].count > 0;
+      console.log(rows[0])
+      return rows[0];
     } catch (err) {
       console.error('Error checking user existence:', err);
       throw new Error('Database error while checking user existence');
@@ -117,6 +118,21 @@ class OtpRegService {
       throw new Error('Failed to send OTP');
     }
   }
+
+  //Send OTP via SMS using the provided API
+  public async sendforgetmsg(mobileNo: string, otp: string): Promise<void> {
+    const apiUrl = `http://sms1.powerstext.in/http-tokenkeyapi.php?authentic-key=33325445454e5346415348494f4e533130301725964437&senderid=TEXTTO&route=1&number=${mobileNo}&message=Please use ${otp} OTP. Please do not disclose this OTP with anyone. Thanks. Text2&templateid=1607100000000288161`;
+
+    try {
+      const response = await axios.get(apiUrl);
+      console.log('SMS sent successfully:', response.data);
+    } catch (err) {
+      console.error('Error sending SMS:', err);
+      throw new Error('Failed to send OTP');
+    }
+  }
+
+
 
   public async getpassword( mobileNo: string): Promise<string> {
     const query = `

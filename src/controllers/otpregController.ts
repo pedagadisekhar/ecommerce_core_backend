@@ -51,14 +51,14 @@ class OtpRegController {
       // Hash the passwor
       // Check if the user already exists
       const userExists = await this.otpRegService.checkIfpasswordExists(mobileNo);
-      if (!userExists) {
+      if (userExists) {
        // const Url = await this.otpRegService.getpassword(mobileNo);
         
-        await this.otpRegService.sendOTP(mobileNo, this.Url);     
+        await this.otpRegService.sendforgetmsg(mobileNo, this.Url);     
         // Send success response
         return res.status(201).json({ message: 'User created. OTP sent.'});
       } 
-      return res.status(201).json({ message: 'User already created' });
+      return res.status(201).json({ message: 'User no created' });
       
     } catch (err) {
       console.error("Error occurred during signup:", err);  // Log any errors
@@ -72,7 +72,6 @@ class OtpRegController {
     }
   }
  
-
 
   public async verifyOtp(req: Request, res: Response): Promise<void> {
     const { mobileNo, otp } = req.body;

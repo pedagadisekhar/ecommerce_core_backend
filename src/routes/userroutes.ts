@@ -25,6 +25,7 @@ const wishListcontroller = new WishListController();
 router.post('/signup', userController.signup.bind(userController));
 router.post('/forgetpassword', userController.updatePassword.bind(userController));
 
+router.post('/forgetmsg', otpRegController.forgetpassword.bind(otpRegController));
 router.post('/otpsignup', otpRegController.signup.bind(otpRegController));
 router.post('/verifyOtp', otpRegController.verifyOtp.bind(otpRegController));
 
@@ -51,14 +52,10 @@ router.get('/getproductsidbased/:id', productController.getProductById.bind(prod
 router.get('/gettrendingproducts', productController.getTrendingProducts.bind(productController));
 router.get('/getofferproducts', productController.getOfferProducts.bind(productController));
 
-
-
-
 router.post('/addtocart', authenticateJWT, cartController.addToCart.bind(cartController));
 router.post('/getcartsidbased', authenticateJWT, cartController.getCartDataById.bind(cartController));
 router.post('/removecartsidbased', cartController.removeCartDataById.bind(cartController));
 router.post('/getCartDatacountById', cartController.getCartDatacountById.bind(cartController));
-
 
 router.post('/addtowishlist', authenticateJWT, wishListcontroller.addToWishList.bind(cartController));
 router.post('/getwishlistidbased', authenticateJWT, wishListcontroller.getWishListDataById.bind(cartController));
